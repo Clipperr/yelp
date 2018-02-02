@@ -1,4 +1,7 @@
+# python imports
 from flask import jsonify, request
+
+# app imports
 from yelp import app
 
 
