@@ -1,0 +1,7 @@
+from flask import jsonify, request
+from yelp import app
+
+
+@app.route('/')
+def index():
+    return jsonify({'message' : 'Hello World'})
