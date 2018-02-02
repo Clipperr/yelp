@@ -4,4 +4,4 @@ from yelp import app
 
 @app.route('/')
 def index():
-    return jsonify({'message' : 'Hello World'})
+    return jsonify({'message' : 'Hello World 2'})
