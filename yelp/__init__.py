@@ -10,4 +10,4 @@ from flask import Flask
 app = Flask(__name__)
 
 # files containing views
-from yelp import business
+from yelp import users_views
