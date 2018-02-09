@@ -12,11 +12,11 @@ def index():
 
 @app.route('/search/<alias>', methods=['GET'])
 def search_alias(alias):
-    """ searches if the alias is usable """
+    ''' searches if the alias is usable '''
     pass
 
 
-@app.route('/signup', methods=['POST'])
+@app.route('/user/signup', methods=['POST'])
 def signup(data):
-    """ registers a user to the system """
-    pass
+    ''' registers a user to the system '''
+    pass        
