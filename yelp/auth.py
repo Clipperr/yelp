@@ -9,7 +9,7 @@ def expects(fields):
 
     def decorator(view_function):
         '''' decorating around the view_function '''
-        @wraps
+        @wraps(view_function)
         def wrapper(*args, **kwargs):
             
             if not fields:
