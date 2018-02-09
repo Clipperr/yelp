@@ -8,7 +8,7 @@ def expects(fields):
     ''' middleware for validation of request data requirements '''
 
     def decorator(view_function):
-        '''' decorating around the view_function '''
+        ''' decorating around the view_function '''
         @wraps(view_function)
         def wrapper(*args, **kwargs):
             
