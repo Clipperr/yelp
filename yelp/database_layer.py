@@ -19,7 +19,7 @@ def database_read_otp(key, ts):
     return database_read_one(COLLECTION_OTP, {'key' : key, 'expiration_time' : {'$gt' : ts}})
 
 
-def database_add_otp(key, otp, generation_time):
+def database_add_otp(key, otp, generation_time, expiration_time):
     ''' adds a new otp in db against the give key'''
 
     otp = {
@@ -45,6 +45,10 @@ def database_update_otp_time(ts, otp):
 
 
 
+def database_read_user_by_phone(phone_number):
+    ''' read user by phone number '''
+
+    return database_read_one(COLLECTION_USER, {'phone_number' : phone_number})
 
 
 def database_create_unverified_user(phone_number):

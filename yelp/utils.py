@@ -38,7 +38,7 @@ def generate_otp(key):
     # generate an OTP of specified length
     otp = ''.join([str(random.randint(0, 9)) for i in range(6)])
     
-    expiration_time = ts + (60 * 2)
+    expiration_time = ts + (60 * 5)
 
     # add OTP into db
     database_add_otp(key, otp, ts, expiration_time)

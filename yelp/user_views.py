@@ -8,8 +8,7 @@ from flask import jsonify, request
 from yelp import app
 from yelp.auth import expects
 from yelp.utils import posted, generate_otp
-from yelp.database_layer import database_create_unverified_user
-
+from yelp.users import create
 
 @app.route('/')
 def index():
@@ -27,7 +26,7 @@ def send_user_otp(data):
     if not repeat:
         print('sending an sms to: ' + phone_number + ' with an OTP: ' + otp)
     
-    _ = database_create_unverified_user(phone_number)
+    _ = create(phone_number)
     return jsonify(status='OK')
 
 
