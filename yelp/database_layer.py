@@ -13,10 +13,18 @@ COLLECTION_USER = 'user'
 
 
 
-def database_read_otp(key, ts):
+def database_read_unexpired_otp(key, ts):
     ''' reads otp from db agains the given key '''
 
     return database_read_one(COLLECTION_OTP, {'key' : key, 'expiration_time' : {'$gt' : ts}})
+
+
+def database_read_otp(key, otp):
+    ''' reads otp from db agains the given key '''
+
+    return database_read_one(COLLECTION_OTP, {'key' : key, 'otp' : otp})
+
+
 
 
 def database_add_otp(key, otp, generation_time, expiration_time):
@@ -70,3 +78,14 @@ def database_create_unverified_user(phone_number):
     database_insert(COLLECTION_USER, user)
 
     return user
+
+
+
+def database_update_user_phone_verified(user):
+    ''' updates user status to phone verified '''
+    
+    user.update({
+        'phone_verified' : True
+    })
+
+    database_update_one(COLLECTION_USER, user)

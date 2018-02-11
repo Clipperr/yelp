@@ -50,7 +50,7 @@ def database_read_many(collection, read_filter={}):
 def database_update_one(collection, data, read_filter={}):
     ''' update single document in db based on read filter '''
 
-    db_collection = polygon[collection]
+    db_collection = polygon_db[collection]
     
     if not read_filter and 'id' in data:
         return db_collection.update_one({'id' : data['id']}, {'$set' : data})
