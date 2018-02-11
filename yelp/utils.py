@@ -8,7 +8,10 @@ import time
 from flask import request
 
 # --- app module imports
+from yelp.config.config import OTP_LEN, OTP_EXPIRATION_TIME, SMS_THROTLE_TIME
 from yelp.database_layer import database_update_otp_time, database_add_otp, database_read_otp
+
+TIME_SEC = 60 # seconds
 
 def posted():
     ''' return request data or an empty dict '''
@@ -29,7 +32,7 @@ def generate_otp(key):
     otp = database_read_otp(key, ts)
 
     if otp:
-        if otp['last_sms_sent'] + (60 * 2) > ts:
+        if otp['last_sms_sent'] + (TIME_SEC * SMS_THROTLE_TIME) > ts:
             return (otp['otp'], True)
         else:
             database_update_otp_time(ts, otp)
@@ -38,7 +41,7 @@ def generate_otp(key):
     # generate an OTP of specified length
     otp = ''.join([str(random.randint(0, 9)) for i in range(6)])
     
-    expiration_time = ts + (60 * 5)
+    expiration_time = ts + (TIME_SEC * OTP_EXPIRATION_TIME)
 
     # add OTP into db
     database_add_otp(key, otp, ts, expiration_time)
