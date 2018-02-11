@@ -53,10 +53,10 @@ def database_update_one(collection, data, read_filter={}):
     db_collection = polygon[collection]
     
     if not read_filter and 'id' in data:
-        return db_collection.update_one({'id' : data['id']}, data)
+        return db_collection.update_one({'id' : data['id']}, {'$set' : data})
 
     else:
-        return db_collecton.update_one(read_filter, data)
+        return db_collecton.update_one(read_filter, {'$set' : data})
 
 
 
