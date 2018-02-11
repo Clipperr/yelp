@@ -46,3 +46,17 @@ def database_read_many(collection, read_filter={}):
 
     return list(data) if data else None
 
+
+def database_update_one(collection, data, read_filter={}):
+    ''' update single document in db based on read filter '''
+
+    db_collection = polygon[collection]
+    
+    if not read_filter and 'id' in data:
+        return db_collection.update_one({'id' : data['id']}, data)
+
+    else:
+        return db_collecton.update_one(read_filter, data)
+
+
+
