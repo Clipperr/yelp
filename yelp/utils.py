@@ -59,9 +59,6 @@ def verify_otp(key, otp):
     otp = database_read_otp(key, otp)
 
     if otp:
-        print(otp)
-        print(ts)
-        print(otp['expiration_time'])
         if ts < otp['expiration_time']:
             return ok
 
