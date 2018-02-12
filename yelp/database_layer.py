@@ -89,3 +89,12 @@ def database_update_user_phone_verified(user):
     })
 
     database_update_one(COLLECTION_USER, user)
+
+
+def database_check_alias_availability(alias):
+    ''' checks availability of alais '''
+
+    if database_read_one(COLLECTION_USER, {'alias' : alias}):
+        return False
+
+    return True

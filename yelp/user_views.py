@@ -10,7 +10,7 @@ from yelp.errors import InvalidUsage
 from yelp.auth import expects
 from yelp.utils import posted, generate_otp, verify_otp
 from yelp.users import create
-from yelp.database_layer import database_update_user_phone_verified, database_read_user_by_phone
+from yelp.database_layer import database_update_user_phone_verified, database_read_user_by_phone, database_check_alias_availability
 
 @app.route('/')
 def index():
@@ -57,20 +57,11 @@ def verify_user_otp(data):
     return jsonify(status='OK')
 
 
-#@app.route('/user/signup', methods=['POST'])
-#@expects(['first_name', 'last_name', 'alias', 'phone_number'])
-#def signup(data):
-#    ''' registers a user to the system '''
-#
-#    data = posted()
-#    first_name = data['first_name']
-#    last_name = data['last_name']
-#    alias = data['alias']
-#    phone_number = data['phone_number']
-#
-#    if database_read_user_by_alias(alias):
-#        pass #raise error
-#
-#    user = database_create_user(first_name, last_name, alias, phone_number)
-#
-#    return jsonify(status='OK')
+@app.route('/user/check/alias/<string:alias>', methods=['GET'])
+def check_alias_availability(alias):
+    ''' checks if alias is available to be used '''
+
+    if database_check_alias_availability(alias):
+        return jsonify(available=True, status='OK')
+
+    return jsonify(available=False, status='OK')
