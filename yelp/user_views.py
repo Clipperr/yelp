@@ -8,9 +8,11 @@ from flask import jsonify, request
 from yelp import app
 from yelp.errors import InvalidUsage
 from yelp.auth import expects
-from yelp.utils import posted, generate_otp, verify_otp
+from yelp.utils import posted, generate_otp, verify_otp, current_time
 from yelp.users import create
 from yelp.database_layer import database_update_user_phone_verified, database_read_user_by_phone, database_check_alias_availability
+from yelp.database_layer import database_update_user_registration
+
 
 @app.route('/')
 def index():
@@ -57,11 +59,24 @@ def verify_user_otp(data):
     return jsonify(status='OK')
 
 
-@app.route('/user/check/alias/<string:alias>', methods=['GET'])
-def check_alias_availability(alias):
-    ''' checks if alias is available to be used '''
 
+@app.route('/user/signup', methods=['POST'])
+@expects(['phone_number', 'first_name', 'last_name', 'alias'])
+def user_signup(data):
+    ''' updates user information '''
+
+    first_name = data['first_name']
+    last_name = data['last_name']
+    alias = data['alias']
+    phone_number = data['phone_number']
+    
     if database_check_alias_availability(alias):
-        return jsonify(available=True, status='OK')
+        return InvalidUsage(message='Alias taken', status_code=452)
 
-    return jsonify(available=False, status='OK')
+
+    user = database_update_user_registration(phone_number, first_name.title(), last_name.title(), alias, current_time())
+    
+    if user:
+        return jsonify(status='OK')
+
+    raise InvalidUsage(message='Cannot signup', status_code=452)

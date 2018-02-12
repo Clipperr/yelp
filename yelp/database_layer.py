@@ -66,6 +66,7 @@ def database_create_unverified_user(phone_number):
         'first_name' : '',
         'last_name' : '',
         'alias' : '',
+        'full_name' : '',
         'phone_number' : phone_number,
         'phone_verified' : False,
         'signup_time' : 0,
@@ -79,6 +80,24 @@ def database_create_unverified_user(phone_number):
 
     return user
 
+
+def database_update_user_registration(phone_number, first_name, last_name, alias, signup_time):
+    
+    user = database_read_one(COLLECTION_USER, {'phone_number' : phone_number})
+
+    if user:
+        user.update({
+            'first_name' : first_name,
+            'last_name' : last_name,
+            'full_name' : ' '.join([first_name, last_name]),
+            'alias' : alias,
+            'signup_time' : signup_time
+        })
+
+        database_update_one(COLLECTION_USER, user)
+        return user
+
+    return None
 
 
 def database_update_user_phone_verified(user):
